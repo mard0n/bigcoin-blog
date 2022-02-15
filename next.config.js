@@ -2,9 +2,12 @@
 const nextConfig = {
   reactStrictMode: true,
   i18n: {
-    locales: ['en-US', 'ar'],
-    defaultLocale: 'en-US',
+    locales: ["en-US", "ar"],
+    defaultLocale: "en-US",
   },
-}
+  images: {
+    domains: ["images.ctfassets.net"],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
