@@ -3,7 +3,7 @@ import { NextPage } from "next";
 interface HeaderProps {}
 
 const Header: NextPage<HeaderProps> = () => {
-  return <>header</>;
+  return <div className="container">header</div>;
 };
 
 export default Header;

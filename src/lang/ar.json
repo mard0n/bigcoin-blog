@@ -1,5 +1,7 @@
 {
   "Home": {
-    "title": "مرحبا بالعالم!"
+    "title": "مدونة CoinMENA",
+    "description": "مدونة CoinMENA هي أول مدونة تشفير تجلب لك أحدث الاتجاهات والموضوعات في مجال التشفير.",
+    "searchPlaceholderText": "مقال البحث"
   }
 }
