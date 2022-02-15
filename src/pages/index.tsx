@@ -16,6 +16,15 @@ const client = createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_KEY || "",
 });
 
+const BlogNotFound = () => {
+  return (
+    <div className="text-center my-10 h-[calc(100vh-400px)]">
+      <div className="text-9xl text-[#5A7184] mb-5">Oops!</div>
+      <div className="text-xl">No articles found with this name</div>
+    </div>
+  );
+};
+
 interface HomeProps {
   blogs: Entry<Blog>[];
 }
@@ -31,8 +40,12 @@ const Home: NextPage<HomeProps> = ({ blogs }) => {
     setSearchValue(value);
   };
   const handleTagSelect = (value: string) => {
-    setSelectedTag(value);
     setSearchValue("");
+    if (selectedTag === value) {
+      setSelectedTag("");
+    } else {
+      setSelectedTag(value);
+    }
   };
 
   const filteredBlogs = blogs.filter((blog) => {
@@ -49,6 +62,7 @@ const Home: NextPage<HomeProps> = ({ blogs }) => {
       return true;
     }
   });
+  // console.log("filteredBlogs?.length", filteredBlogs?.length);
   // console.log("filteredBlogs", filteredBlogs);
   const tags = [...new Set(blogs.map((blog) => blog.fields.tags).flat())];
   return (
@@ -71,30 +85,37 @@ const Home: NextPage<HomeProps> = ({ blogs }) => {
           selectedTag={selectedTag}
           handleOnSelect={handleTagSelect}
         />
-        <div
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 py-16 container"
-          ref={elemToScrollToOnSearch}
-        >
-          {[
-            ...filteredBlogs,
-            ...filteredBlogs,
-            ...filteredBlogs,
-            ...filteredBlogs,
-            ...filteredBlogs,
-          ].map((blog, index) => {
-            return (
-              <Card
-                key={blog.fields?.title + index}
-                cardImageSrc={"https:" + blog.fields?.thumbnail.fields.file.url}
-                articleLink={"/articles/" + blog.sys.id}
-                title={blog.fields?.title}
-                desc={blog.fields?.description}
-              />
-            );
-          })}
-        </div>
+        {filteredBlogs?.length ? (
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-14 py-16 container"
+            ref={elemToScrollToOnSearch}
+          >
+            {filteredBlogs.map((blog, index) => {
+              return (
+                <div key={blog.sys.id} className="fadeInUp">
+                  <Card
+                    cardImageSrc={
+                      "https:" + blog.fields?.thumbnail.fields.file.url
+                    }
+                    articleLink={"/articles/" + blog.sys.id}
+                    title={blog.fields?.title}
+                    desc={blog.fields?.description}
+                    authorName={blog.fields?.authorName}
+                    authorImage={
+                      "https:" + blog.fields?.authorImage?.fields.file.url
+                    }
+                    editDate={blog.fields?.editDate}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div ref={elemToScrollToOnSearch}>
+            <BlogNotFound />
+          </div>
+        )}
       </main>
-
       <Footer />
     </div>
   );

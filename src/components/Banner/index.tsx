@@ -32,7 +32,7 @@ const Banner: NextPage<BannerProps> = ({
         <div className="mb-9 text-center max-w-lg mx-auto text-white">
           {t("description")}
         </div>
-        <div className="max-w-lg mx-auto relative">
+        <form className="max-w-lg mx-auto relative" onSubmit={(e) => e.preventDefault()}>
           <input
             className="w-full h-16 rounded-full placeholder:text-slate-400 pl-8"
             type="search"
@@ -67,7 +67,7 @@ const Banner: NextPage<BannerProps> = ({
               ></path>
             </svg>
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );

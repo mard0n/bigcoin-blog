@@ -20,7 +20,7 @@ const Tags: NextPage<TagsProps> = ({ tags, selectedTag, handleOnSelect }) => {
             text-[color:${selectedTag === tag ? "#0D386B" : "#5F6771"}]
           `}
           style={{
-            borderBottom: selectedTag === tag ? "2px solid #0D386B" : "none",
+            borderBottom: selectedTag === tag ? "2px solid #0D386B" : "2px solid transparent",
           }}
           onClick={() => handleOnSelect(tag)}
         >
