@@ -19,7 +19,7 @@ const ArticleImage: NextPage<ArticleImageProps> = ({
         <div className={style["img-container"]}>
           <Image src={imgSrc} alt={title} layout="fill" objectFit="cover" />
         </div>
-        <figcaption className="px-8 py-6">
+        <figcaption className="px-8 py-6 text-sm text-[#4B5157]">
           {description}
         </figcaption>
       </figure>

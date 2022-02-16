@@ -2,7 +2,11 @@
   "Home": {
     "title": "مدونة CoinMENA",
     "description": "مدونة CoinMENA هي أول مدونة تشفير تجلب لك أحدث الاتجاهات والموضوعات في مجال التشفير.",
-    "searchPlaceholderText": "مقال البحث"
+    "searchPlaceholderText": "مقال البحث",
+    "logoSubText": "مرخصة من قبل مصرف البحرين المركزي",
+    "menuSupport": "يدعم",
+    "menuSignIn": "تسجيل الدخول",
+    "menuSignUp": "اشتراك"
   },
   "Article": {
     "backToMain": "العودة إلى الرئيسية"

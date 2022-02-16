@@ -1,0 +1,12 @@
+.mobile-menu-container {
+  @apply fixed top-0 text-white bg-[#081f39] w-[250px] h-[100vh] z-30 shadow-[0_2px_15px_3px_#000016];
+  transition: all 0.3s;
+}
+.mobile-menu-right {
+  @apply text-right left-full;
+  transform: translateX(10px);
+}
+.mobile-menu-left {
+  @apply text-left right-full;
+  transform: translateX(-10px);
+}

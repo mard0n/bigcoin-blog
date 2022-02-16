@@ -99,9 +99,9 @@ const Article: NextPage<ArticleProps> = (props) => {
       <main className="pt-16">
         {authorName && authorImage && (
           <div className="relative article-text-container hidden xl:block">
-            {/* TODO: ask the design for better place to put */}
+            {/* TODO: ask the design for better place to put on mobile*/}
             <div className="absolute right-0">
-              <div className="mt-[calc(-50%-64px)]">
+              <div className="mt-[calc(-50%-52px)]">
                 <AuthorCard
                   authorName={authorName}
                   authorImage={

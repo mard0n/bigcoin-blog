@@ -24,7 +24,7 @@ const Banner: NextPage<BannerProps> = ({
     });
   };
   return (
-    <div className="py-24" style={{ backgroundColor: "rgb(8, 31, 57)" }}>
+    <div className="py-24 bg-[#081f39]">
       <div className="container">
         <div className="text-6xl mb-6 font-bold text-center text-white">
           {t("title")}
