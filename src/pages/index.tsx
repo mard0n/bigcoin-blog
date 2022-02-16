@@ -7,8 +7,8 @@ import Head from "next/head";
 import { Article } from "../types";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import Banner from "../components/Banner";
-import Card from "../components/Card";
+import HomeBanner from "../components/HomeBanner";
+import HomeArticleCard from "../components/HomeArticleCard";
 import HomeFilterTags from "../components/HomeFilterTags";
 import { useRouter } from "next/router";
 
@@ -85,7 +85,7 @@ const Home: NextPage<HomeProps> = ({ articles = [] }) => {
       </Head>
       <header>
         <Navbar />
-        <Banner
+        <HomeBanner
           searchValue={searchValue}
           handleOnChange={handleSearchOnChange}
           elemToScrollTo={elemToScrollToOnSearch}
@@ -105,7 +105,7 @@ const Home: NextPage<HomeProps> = ({ articles = [] }) => {
           >
             {filteredArticles.map((article, index) => {
               return (
-                <Card
+                <HomeArticleCard
                   key={article.sys.id}
                   cardImageSrc={
                     "https:" + article.fields?.thumbnail.fields.file.url

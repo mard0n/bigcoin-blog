@@ -62,16 +62,14 @@ const Card: NextPage<CardProps> = ({
         </p>
         <div className="flex justify-between items-center">
           {authorName && authorImage ? (
-            <div className="flex items-center">
-              <div className="mr-10">
-                <Image
-                  src={authorImage}
-                  className="rounded-full"
-                  alt="author's image"
-                  height={40}
-                  width={40}
-                />
-              </div>
+            <div className="grid grid-flow-col gap-5 items-center">
+              <Image
+                src={authorImage}
+                className="rounded-full"
+                alt="author's image"
+                height={40}
+                width={40}
+              />
               <div>
                 <div className="text-[#183B56]">{authorName}</div>
                 <div className="text-[#5A7184] italic text-sm">

@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { LOCALE } from "../../constants";
 import BurgerMenu from "./BurgerMenu";
 import Logo from "./Logo";
 
@@ -27,11 +28,30 @@ const GlobeIcon = () => (
 interface HeaderProps {}
 
 const Header: NextPage<HeaderProps> = () => {
-  const { locale, route } = useRouter();
+  const router = useRouter();
+  const { locale, asPath } = router;
   const t = useTranslations("Home");
 
+  console.log("LOCALE.EN", LOCALE.EN);
+
+  const renderLanguage = () => {
+    return (
+      <>
+        <GlobeIcon />{" "}
+        {locale === LOCALE.AR ? (
+          <Link href={asPath} locale={LOCALE.EN}>
+            English
+          </Link>
+        ) : (
+          <Link href={asPath} locale={LOCALE.AR}>
+            عربى
+          </Link>
+        )}
+      </>
+    );
+  };
   return (
-    <div className="bg-[#081f39]">
+    <nav className="bg-[#081f39]">
       <div className="container flex justify-between items-center h-[84px]">
         <Logo />
         <div className="block md:hidden">
@@ -66,16 +86,7 @@ const Header: NextPage<HeaderProps> = () => {
               </a>
             </div>
             <div className="hover:text-[#FF8216] mx-8 mb-2">
-              <GlobeIcon />{" "}
-              {locale === "ar" ? (
-                <Link href={route} locale="en-US">
-                  English
-                </Link>
-              ) : (
-                <Link href={route} locale="ar">
-                  عربى
-                </Link>
-              )}
+              {renderLanguage()}
             </div>
           </BurgerMenu>
         </div>
@@ -111,22 +122,11 @@ const Header: NextPage<HeaderProps> = () => {
                 {t("menuSignUp")}
               </a>
             </div>
-            <div className="hover:text-[#FF8216] ml-8">
-              <GlobeIcon />{" "}
-              {locale === "ar" ? (
-                <Link href={route} locale="en-US">
-                  English
-                </Link>
-              ) : (
-                <Link href={route} locale="ar">
-                  عربى
-                </Link>
-              )}
-            </div>
+            <div className="hover:text-[#FF8216] ml-8">{renderLanguage()}</div>
           </div>
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

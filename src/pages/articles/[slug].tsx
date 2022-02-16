@@ -62,11 +62,13 @@ const Article: NextPage<ArticleProps> = (props) => {
       [BLOCKS.EMBEDDED_ASSET]: (node: Block | Inline) => {
         const { title, description, file } = node.data.target.fields;
         return (
-          <ArticleImage
-            imgSrc={"https:" + file.url}
-            title={title}
-            description={description}
-          />
+          <div className="pb-8">
+            <ArticleImage
+              imgSrc={"https:" + file.url}
+              title={title}
+              description={description}
+            />
+          </div>
         );
       },
     },

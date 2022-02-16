@@ -2,11 +2,12 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FunctionComponent, useState } from "react";
+import { LOCALE } from "../../../constants";
 import style from "./BurgerMenu.module.css";
 
 interface BurgerMenuProps {}
 
-const BurgerMenu: FunctionComponent<BurgerMenuProps> = ({children}) => {
+const BurgerMenu: FunctionComponent<BurgerMenuProps> = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const t = useTranslations("Home");
   const { locale, route } = useRouter();
@@ -50,13 +51,13 @@ const BurgerMenu: FunctionComponent<BurgerMenuProps> = ({children}) => {
       </div>
       <div
         className={`${style["mobile-menu-container"]} ${
-          locale === "ar"
+          locale === LOCALE.AR
             ? style["mobile-menu-left"]
             : style["mobile-menu-right"]
         }`}
         style={
           isMenuOpen
-            ? locale === "ar"
+            ? locale === LOCALE.AR
               ? { transform: "translateX(100%)" }
               : { transform: "translateX(-100%)" }
             : undefined

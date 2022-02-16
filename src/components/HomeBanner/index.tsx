@@ -1,22 +1,23 @@
 import React, { BaseSyntheticEvent, RefObject } from "react";
 import { NextPage } from "next";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/router";
+import { LOCALE } from "../../constants";
 
-interface BannerProps {
+interface HomeBannerProps {
   searchValue: string;
   handleOnChange: (value: string) => void;
   elemToScrollTo: RefObject<HTMLElement>;
 }
 
-const Banner: NextPage<BannerProps> = ({
+const HomeBanner: NextPage<HomeBannerProps> = ({
   searchValue,
   handleOnChange,
   elemToScrollTo,
 }) => {
+  const { locale } = useRouter();
   const t = useTranslations("Home");
   const handleOnClick = () => {
-    console.log("submit");
-
     elemToScrollTo.current?.scrollIntoView({
       behavior: "smooth",
       block: "start",
@@ -32,23 +33,26 @@ const Banner: NextPage<BannerProps> = ({
         <div className="mb-9 text-center max-w-lg mx-auto text-white">
           {t("description")}
         </div>
-        <form className="max-w-lg mx-auto relative" onSubmit={(e) => e.preventDefault()}>
+        <form
+          className="max-w-lg mx-auto relative"
+          onSubmit={(e) => e.preventDefault()}
+        >
           <input
-            className="w-full h-16 rounded-full placeholder:text-slate-400 pl-8"
+            className="w-full h-16 rounded-full placeholder:text-slate-400 px-8"
             type="search"
             name="search"
             id="search"
-            placeholder={t('searchPlaceholderText')}
+            placeholder={t("searchPlaceholderText")}
             value={searchValue}
             onChange={(e: BaseSyntheticEvent) => handleOnChange(e.target.value)}
           />
           <button
-            className="rounded-full absolute top-1 right-1"
+            className={`rounded-full absolute top-1 ${locale === LOCALE.AR ? "left-1" : "right-1"}`}
             style={{
               background:
                 "linear-gradient(rgb(255, 130, 22) 0%, rgb(220, 102, 0) 100%)",
               height: 56,
-              width: 56
+              width: 56,
             }}
             type="submit"
             onClick={handleOnClick}
@@ -73,4 +77,4 @@ const Banner: NextPage<BannerProps> = ({
   );
 };
 
-export default Banner;
+export default HomeBanner;

@@ -25,7 +25,7 @@ const RelatedArticles: NextPage<RelatedArticlesProps> = ({
           const { thumbnail, title } = article.fields || {};
           if (index + 1 < numberOfAticlesToShow) {
             return (
-              <Link href={"/articles/" + article.sys.id}>
+              <Link href={"/articles/" + article.sys.id} key={article.sys.id}>
                 <a>
                   <div key={article.sys.id} className="w-[260px]">
                     {thumbnail && (
