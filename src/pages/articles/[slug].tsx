@@ -16,6 +16,7 @@ import ArticleImage from "../../components/ArticleImage";
 import ArticleBanner from "../../components/ArticleBanner";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import AuthorCard from "../../components/AuthorCard";
 
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID || "",
@@ -67,25 +68,42 @@ const Article: NextPage<ArticleProps> = ({ blog }) => {
       },
     },
   };
-
+  const {
+    authorName,
+    authorImage,
+    title,
+    description,
+    thumbnail,
+    tags,
+    content,
+  } = blog?.fields || {};
   return (
     <>
       <header>
         <Navbar />
         <ArticleBanner
-          mainTag={blog?.fields.tags[0]}
-          title={blog?.fields.title}
-          description={blog?.fields.description}
-          bgImgSrc={"https:" + blog?.fields.thumbnail.fields.file.url}
-          bgImgAlt={blog?.fields.thumbnail.fields.title}
+          mainTag={tags && tags[0]}
+          title={title}
+          description={description}
+          bgImgSrc={"https:" + thumbnail?.fields.file.url}
+          bgImgAlt={thumbnail?.fields.title}
         />
       </header>
       <main className="py-16">
-        {blog?.fields?.content &&
-          documentToReactComponents(
-            blog?.fields?.content as any,
-            contentRenderOptions
-          )}
+        {authorName && authorImage && (
+          <div className="relative article-text-container">
+            <div className="absolute right-0">
+              <div className="mt-[calc(-50%-64px)]">
+                <AuthorCard
+                  authorName={authorName}
+                  authorImage={"https:" + authorImage.fields.file.url}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+        {content &&
+          documentToReactComponents(content as any, contentRenderOptions)}
       </main>
       <Footer />
     </>

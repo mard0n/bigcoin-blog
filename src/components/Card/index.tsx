@@ -70,6 +70,7 @@ const Card: NextPage<CardProps> = ({
                   alt="author's image"
                   height={40}
                   width={40}
+                  layout="fixed"
                 />
               </div>
               <div>
