@@ -1,6 +1,6 @@
 import { Asset, EntryFields, RichTextContent } from "contentful";
 
-export type Blog = {
+export type Article = {
   title: string;
   description: string;
   thumbnail: Asset;

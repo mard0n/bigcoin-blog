@@ -4,12 +4,12 @@ import { useTranslations } from "next-intl";
 import { createClient, Entry } from "contentful";
 
 import Head from "next/head";
-import { Blog } from "../types";
+import { Article } from "../types";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Banner from "../components/Banner";
 import Card from "../components/Card";
-import Tags from "../components/Tags";
+import HomeFilterTags from "../components/HomeFilterTags";
 import { useRouter } from "next/router";
 
 const client = createClient({
@@ -17,7 +17,7 @@ const client = createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_KEY || "",
 });
 
-const BlogNotFound = () => {
+const ArticleNotFound = () => {
   return (
     <div className="text-center my-10 h-[calc(100vh-400px)]">
       <div className="text-9xl text-[#5A7184] mb-5">Oops!</div>
@@ -27,10 +27,10 @@ const BlogNotFound = () => {
 };
 
 interface HomeProps {
-  blogs: Entry<Blog>[] | undefined;
+  articles: Entry<Article>[] | undefined;
 }
 
-const Home: NextPage<HomeProps> = ({ blogs = [] }) => {
+const Home: NextPage<HomeProps> = ({ articles = [] }) => {
   const t = useTranslations("Home");
   const router = useRouter();
   const { tag } = router.query;
@@ -58,22 +58,24 @@ const Home: NextPage<HomeProps> = ({ blogs = [] }) => {
     }
   };
 
-  const filteredBlogs = blogs.filter((blog) => {
+  const filteredArticles = articles.filter((article) => {
     // console.log("searchValue", searchValue);
     // console.log("selectedTag", selectedTag);
     if (searchValue) {
-      return blog.fields.title
+      return article.fields.title
         .toLowerCase()
         .includes(searchValue.toLowerCase());
     } else if (selectedTag) {
-      return blog.fields.tags.includes(selectedTag);
+      return article.fields.tags.includes(selectedTag);
     } else {
       return true;
     }
   });
-  // console.log("filteredBlogs?.length", filteredBlogs?.length);
-  // console.log("filteredBlogs", filteredBlogs);
-  const tags = [...new Set(blogs.map((blog) => blog.fields.tags).flat())];
+  // console.log("filteredArticles?.length", filteredArticles?.length);
+  // console.log("filteredArticles", filteredArticles);
+  const tags = [
+    ...new Set(articles.map((article) => article.fields.tags).flat()),
+  ];
   return (
     <div>
       <Head>
@@ -89,38 +91,38 @@ const Home: NextPage<HomeProps> = ({ blogs = [] }) => {
           handleOnChange={handleSearchOnChange}
           elemToScrollTo={elemToScrollToOnSearch}
         />
-        <Tags
+        <HomeFilterTags
           tags={tags}
           selectedTag={selectedTag}
           handleOnSelect={handleTagSelect}
         />
-        {filteredBlogs?.length ? (
+        {filteredArticles?.length ? (
           <div
             className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-14 py-16 container"
             ref={elemToScrollToOnSearch}
           >
-            {filteredBlogs.map((blog, index) => {
+            {filteredArticles.map((article, index) => {
               return (
                 <Card
-                  key={blog.sys.id}
+                  key={article.sys.id}
                   cardImageSrc={
-                    "https:" + blog.fields?.thumbnail.fields.file.url
+                    "https:" + article.fields?.thumbnail.fields.file.url
                   }
-                  articleLink={"/articles/" + blog.sys.id}
-                  title={blog.fields?.title}
-                  description={blog.fields?.description}
-                  authorName={blog.fields?.authorName}
+                  articleLink={"/articles/" + article.sys.id}
+                  title={article.fields?.title}
+                  description={article.fields?.description}
+                  authorName={article.fields?.authorName}
                   authorImage={
-                    "https:" + blog.fields?.authorImage?.fields.file.url
+                    "https:" + article.fields?.authorImage?.fields.file.url
                   }
-                  editDate={blog.fields?.editDate}
+                  editDate={article.fields?.editDate}
                 />
               );
             })}
           </div>
         ) : (
           <div ref={elemToScrollToOnSearch}>
-            <BlogNotFound />
+            <ArticleNotFound />
           </div>
         )}
       </main>
@@ -131,7 +133,7 @@ const Home: NextPage<HomeProps> = ({ blogs = [] }) => {
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   try {
-    const res = await client.getEntries<Blog>({
+    const res = await client.getEntries<Article>({
       content_type: "coinmenaBlog",
       locale,
     });
@@ -140,7 +142,7 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
       props: {
         locale,
         messages: (await import(`../lang/${locale}.json`)).default,
-        blogs: res.items,
+        articles: res.items,
       },
       revalidate: 60,
     };

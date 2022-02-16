@@ -10,14 +10,16 @@ import { BLOCKS, Block, Inline } from "@contentful/rich-text-types";
 
 import Head from "next/head";
 import Image from "next/image";
-import { Blog } from "../../types";
-import { ReactNode } from "react";
+import { Article } from "../../types";
+import { ReactNode, useEffect, useState } from "react";
 import ArticleImage from "../../components/ArticleImage";
 import ArticleBanner from "../../components/ArticleBanner";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import AuthorCard from "../../components/AuthorCard";
 import Link from "next/link";
+import RelatedArticles from "../../components/RelatedArticles";
+import { useRouter } from "next/router";
 
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID || "",
@@ -25,12 +27,14 @@ const client = createClient({
 });
 
 interface ArticleProps {
-  blog: Entry<Blog> | undefined;
+  article: Entry<Article> | undefined;
+  articles: Entry<Article>[] | undefined;
 }
 
-const Article: NextPage<ArticleProps> = ({ blog }) => {
+const Article: NextPage<ArticleProps> = (props) => {
   const t = useTranslations("Home");
-  console.log("blog", blog);
+  const { article, articles } = props;
+  console.log("props", props);
 
   const contentRenderOptions = {
     renderNode: {
@@ -49,10 +53,8 @@ const Article: NextPage<ArticleProps> = ({ blog }) => {
         );
       },
       [BLOCKS.PARAGRAPH]: (node: Block | Inline, children: ReactNode) => {
-        console.log("children", children);
-
         return (
-          <div className="article-text-container pb-8 min-h-1">
+          <div className="article-text-container pb-8 last:pb-0 min-h-1">
             <p className="text-lg text-[#4B5157]">{children}</p>
           </div>
         );
@@ -77,7 +79,9 @@ const Article: NextPage<ArticleProps> = ({ blog }) => {
     thumbnail,
     tags,
     content,
-  } = blog?.fields || {};
+  } = article?.fields || {};
+  console.log("article", article);
+
   return (
     <>
       <header>
@@ -86,27 +90,36 @@ const Article: NextPage<ArticleProps> = ({ blog }) => {
           mainTag={tags && tags[0]}
           title={title}
           description={description}
-          bgImgSrc={"https:" + thumbnail?.fields.file.url}
+          bgImgSrc={
+            thumbnail?.fields.file.url && "https:" + thumbnail?.fields.file.url
+          }
           bgImgAlt={thumbnail?.fields.title}
         />
       </header>
-      <main className="py-16">
+      <main className="pt-16">
         {authorName && authorImage && (
-          <div className="relative article-text-container">
+          <div className="relative article-text-container hidden xl:block">
+            {/* TODO: ask the design for better place to put */}
             <div className="absolute right-0">
               <div className="mt-[calc(-50%-64px)]">
                 <AuthorCard
                   authorName={authorName}
-                  authorImage={"https:" + authorImage.fields.file.url}
+                  authorImage={
+                    authorImage.fields.file.url &&
+                    "https:" + authorImage.fields.file.url
+                  }
                 />
               </div>
             </div>
           </div>
         )}
-        {content &&
-          documentToReactComponents(content as any, contentRenderOptions)}
+        {content && (
+          <div>
+            {documentToReactComponents(content as any, contentRenderOptions)}
+          </div>
+        )}
         {tags && (
-          <div className="flex article-text-container">
+          <div className="flex article-text-container my-8">
             {tags.map((tag) => (
               <Link key={tag} href={`/?tag=${tag}`}>
                 <a>
@@ -118,6 +131,9 @@ const Article: NextPage<ArticleProps> = ({ blog }) => {
             ))}
           </div>
         )}
+        {articles?.length && article && (
+          <RelatedArticles articles={articles} currentArticle={article} />
+        )}
       </main>
       <Footer />
     </>
@@ -125,7 +141,7 @@ const Article: NextPage<ArticleProps> = ({ blog }) => {
 };
 
 export async function getStaticPaths({ locales }: GetStaticPathsContext) {
-  const res = await client.getEntries<Blog>({
+  const res = await client.getEntries<Article>({
     content_type: "coinmenaBlog",
   });
   const paths = res.items
@@ -157,7 +173,7 @@ export async function getStaticProps({
   locale,
   params,
 }: GetStaticPropsContext) {
-  console.log("params", params);
+  // console.log("params", params);
 
   const id = params
     ? !Array.isArray(params.slug)
@@ -165,15 +181,21 @@ export async function getStaticProps({
       : ""
     : "";
   try {
-    const res = await client.getEntry<Blog>(id, {
+    const articles = await client.getEntries<Article>({
+      content_type: "coinmenaBlog",
       locale,
     });
+    console.log("static articles", articles);
+
+    const article = articles.items.find((article) => article.sys.id === id);
+    console.log("static article", article);
 
     return {
       props: {
         locale,
         messages: (await import(`../../lang/${locale}.json`)).default,
-        blog: res,
+        article: article,
+        articles: articles.items,
       },
       revalidate: 60,
     };
