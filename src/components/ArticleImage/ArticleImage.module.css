@@ -1,0 +1,18 @@
+.img-container {
+  width: calc(100% + 2px);
+  left: -1px;
+  position: relative;
+  top: -1px;
+  border-top-right-radius: 0.375rem;
+  border-top-left-radius: 0.375rem;
+  overflow: hidden;
+}
+.img-container span {
+  position: relative !important;
+  height: auto !important;
+}
+.img-container span img {
+  position: relative !important;
+  width: 100% !important;
+  height: auto !important;
+}

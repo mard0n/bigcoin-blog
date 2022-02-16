@@ -3,12 +3,19 @@ import type {
   GetStaticPropsContext,
   NextPage,
 } from "next";
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { useTranslations } from "next-intl";
 import { createClient, Entry } from "contentful";
+import { BLOCKS, Block, Inline } from "@contentful/rich-text-types";
 
 import Head from "next/head";
 import Image from "next/image";
 import { Blog } from "../../types";
+import { ReactNode } from "react";
+import ArticleImage from "../../components/ArticleImage";
+import ArticleBanner from "../../components/ArticleBanner";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID || "",
@@ -16,14 +23,73 @@ const client = createClient({
 });
 
 interface ArticleProps {
-  blog: Entry<Blog>;
+  blog: Entry<Blog> | undefined;
 }
 
 const Article: NextPage<ArticleProps> = ({ blog }) => {
+  const t = useTranslations("Home");
   console.log("blog", blog);
 
-  const t = useTranslations("Home");
-  return <div>{blog?.fields?.title}</div>;
+  const contentRenderOptions = {
+    renderNode: {
+      [BLOCKS.HEADING_2]: (node: Block | Inline, children: ReactNode) => {
+        return (
+          <div className="article-text-container pb-8">
+            <h2 className="text-2xl font-bold text-[#262D33]">{children}</h2>
+          </div>
+        );
+      },
+      [BLOCKS.HEADING_3]: (node: Block | Inline, children: ReactNode) => {
+        return (
+          <div className="article-text-container pb-8">
+            <h3 className="text-xl font-bold text-[#262D33]">{children}</h3>
+          </div>
+        );
+      },
+      [BLOCKS.PARAGRAPH]: (node: Block | Inline, children: ReactNode) => {
+        console.log("children", children);
+
+        return (
+          <div className="article-text-container pb-8 min-h-1">
+            <p className="text-lg text-[#4B5157]">{children}</p>
+          </div>
+        );
+      },
+      [BLOCKS.EMBEDDED_ASSET]: (node: Block | Inline) => {
+        const { title, description, file } = node.data.target.fields;
+        return (
+          <ArticleImage
+            imgSrc={"https:" + file.url}
+            title={title}
+            description={description}
+          />
+        );
+      },
+    },
+  };
+
+  return (
+    <>
+      <header>
+        <Navbar />
+        <ArticleBanner
+          mainTag={blog?.fields.tags[0]}
+          title={blog?.fields.title}
+          description={blog?.fields.description}
+          bgImgSrc={"https:" + blog?.fields.thumbnail.fields.file.url}
+          bgImgAlt={blog?.fields.thumbnail.fields.title}
+        />
+      </header>
+      <main className="py-16">
+        {blog?.fields?.content &&
+          documentToReactComponents(
+            blog?.fields?.content as any,
+            contentRenderOptions
+          )}
+      </main>
+      <Footer />
+    </>
+  );
 };
 
 export async function getStaticPaths({ locales }: GetStaticPathsContext) {

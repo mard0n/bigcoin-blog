@@ -3,5 +3,8 @@
     "title": "CoinMENA Blog",
     "description": "CoinMENA blog is the first crypto blog that brings you the latest trneds and topics in the crypto space.",
     "searchPlaceholderText": "Search article"
+  },
+  "Article": {
+    "backToMain": "Back to main"
   }
 }

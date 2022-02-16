@@ -3,12 +3,13 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useCallback, useMemo } from "react";
+import style from "./Card.module.css";
 
 interface CardProps {
   cardImageSrc: string;
   articleLink: string;
   title: string;
-  desc: string;
+  description: string;
   authorName: string | undefined;
   authorImage: string | undefined;
   editDate: string | undefined;
@@ -18,7 +19,7 @@ const Card: NextPage<CardProps> = ({
   cardImageSrc,
   articleLink,
   title,
-  desc,
+  description,
   authorName,
   authorImage,
   editDate,
@@ -33,7 +34,9 @@ const Card: NextPage<CardProps> = ({
   }, [editDate]);
 
   return (
-    <div className="rounded-xl overflow-hidden shadow-[0_15px_25px_rgba(0,0,0,0.06)]">
+    <div
+      className={`rounded-xl overflow-hidden shadow-[0_15px_25px_rgba(0,0,0,0.06)] ${style["animate-card-entrance"]}`}
+    >
       <Link href={articleLink}>
         <a>
           <div className="w-full h-[250px] relative">
@@ -49,12 +52,14 @@ const Card: NextPage<CardProps> = ({
       <div className="px-12 py-8">
         <Link href={articleLink}>
           <a>
-            <h1 className="text-[28px] leading-[1.14] tracking-tight font-semibold mb-[20px] text-[#183B56]">
+            <h1 className="text-[1.75rem] leading-[1.14] tracking-tight font-semibold mb-[20px] text-[#183B56]">
               {title}
             </h1>
           </a>
         </Link>
-        <p className="text-[#183B56] max-h-[72px] line-clamp-3 mb-8">{desc}</p>
+        <p className="text-[#183B56] max-h-[72px] line-clamp-3 mb-8">
+          {description}
+        </p>
         <div className="flex justify-between items-center">
           {authorName && authorImage ? (
             <div className="flex items-center">
