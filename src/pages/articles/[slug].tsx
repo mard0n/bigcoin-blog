@@ -17,6 +17,7 @@ import ArticleBanner from "../../components/ArticleBanner";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import AuthorCard from "../../components/AuthorCard";
+import Link from "next/link";
 
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID || "",
@@ -104,6 +105,19 @@ const Article: NextPage<ArticleProps> = ({ blog }) => {
         )}
         {content &&
           documentToReactComponents(content as any, contentRenderOptions)}
+        {tags && (
+          <div className="flex article-text-container">
+            {tags.map((tag) => (
+              <Link key={tag} href={`/?tag=${tag}`}>
+                <a>
+                  <div className="mr-2 py-1 px-4 border rounded border-[#D9DADB] text-sm">
+                    {tag}
+                  </div>
+                </a>
+              </Link>
+            ))}
+          </div>
+        )}
       </main>
       <Footer />
     </>
