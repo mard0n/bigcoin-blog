@@ -60,7 +60,7 @@ const ArticleBanner: NextPage<ArticleBannerProps> = ({
           </Link>
         </div>
         <div>
-          <h1 className="article-text-container text-[4rem] font-bold leading-[1.1875] tracking-[0.125rem] mb-2">
+          <h1 className="article-text-container text-[4rem] font-bold leading-[1.1875] mb-2">
             {title}
           </h1>
           <p className="article-text-container text-[1.125rem] leading-[1.67] opacity-[85%]">
