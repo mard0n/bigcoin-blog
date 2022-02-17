@@ -55,7 +55,7 @@ const Article: NextPage<ArticleProps> = (props) => {
       },
       [BLOCKS.PARAGRAPH]: (node: Block | Inline, children: ReactNode) => {
         return (
-          <div className="article-text-container pb-8 last:pb-0 min-h-1">
+          <div className="article-text-container pb-8 last:pb-0 min-h-1 text-[1.125rem] leading-[1.67]">
             <p className="text-lg text-[#4B5157]">{children}</p>
           </div>
         );

@@ -55,15 +55,15 @@ const ArticleBanner: NextPage<ArticleBannerProps> = ({
                   d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                 />
               </svg>{" "}
-              {t("backToMain")}
+              <span className="text-sm">{t("backToMain")}</span>
             </a>
           </Link>
         </div>
         <div>
-          <h1 className="article-text-container text-[4rem] leading-[1.1875] tracking-[0.125rem] mb-2">
+          <h1 className="article-text-container text-[4rem] font-bold leading-[1.1875] tracking-[0.125rem] mb-2">
             {title}
           </h1>
-          <p className="article-text-container text-[1.125rem] leading-[1.6666] opacity-[85%]">
+          <p className="article-text-container text-[1.125rem] leading-[1.67] opacity-[85%]">
             {description}
           </p>
         </div>
