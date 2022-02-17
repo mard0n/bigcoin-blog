@@ -20,14 +20,14 @@ const RelatedArticles: NextPage<RelatedArticlesProps> = ({
   );
   return (
     <div className="bg-[#F5F5F5]">
-      <div className="container py-16">
+      <div className="container py-16 overflow-scroll flex gap-8">
         {articlesWithoutCurrentArticle.map((article, index) => {
           const { thumbnail, title } = article.fields || {};
           if (index + 1 < numberOfAticlesToShow) {
             return (
-              <Link href={"/articles/" + article.sys.id} key={article.sys.id}>
-                <a>
-                  <div key={article.sys.id} className="w-[260px]">
+              <div className="w-[260px] inline-block" key={article.sys.id}>
+                <Link href={"/articles/" + article.sys.id}>
+                  <a>
                     {thumbnail && (
                       <div className="relative w-[260px] h-[180px] rounded-lg overflow-hidden">
                         <Image
@@ -39,9 +39,9 @@ const RelatedArticles: NextPage<RelatedArticlesProps> = ({
                       </div>
                     )}
                     <div className="leading-6 font-bold mt-2">{title}</div>
-                  </div>
-                </a>
-              </Link>
+                  </a>
+                </Link>
+              </div>
             );
           }
           return null;

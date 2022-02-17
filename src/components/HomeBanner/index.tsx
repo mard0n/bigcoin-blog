@@ -27,7 +27,7 @@ const HomeBanner: NextPage<HomeBannerProps> = ({
   return (
     <div className="py-24 bg-[#081f39]">
       <div className="container">
-        <div className="text-6xl mb-6 font-bold text-center text-white">
+        <div className="text-4xl md:text-5xl lg:text-6xl mb-6 font-bold text-center text-white">
           {t("title")}
         </div>
         <div className="mb-9 text-center max-w-lg mx-auto text-white">

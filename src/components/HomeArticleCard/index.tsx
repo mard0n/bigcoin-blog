@@ -39,7 +39,7 @@ const Card: NextPage<CardProps> = ({
     >
       <Link href={articleLink}>
         <a>
-          <div className="w-full h-[250px] relative">
+          <div className="w-full h-[150px] lg:h-[250px] relative">
             <Image
               src={cardImageSrc}
               alt="test"
@@ -49,7 +49,7 @@ const Card: NextPage<CardProps> = ({
           </div>
         </a>
       </Link>
-      <div className="px-12 py-8">
+      <div className="px-6 lg:px-12 py-6 lg:py-8">
         <Link href={articleLink}>
           <a>
             <h1 className="text-[1.75rem] leading-[1.14] tracking-tight font-semibold mb-[20px] text-[#183B56]">
