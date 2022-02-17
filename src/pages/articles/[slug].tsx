@@ -32,6 +32,7 @@ interface ArticleProps {
 }
 
 const Article: NextPage<ArticleProps> = (props) => {
+  const router = useRouter();
   const t = useTranslations("Home");
   const { article, articles } = props;
   console.log("props", props);
@@ -86,6 +87,35 @@ const Article: NextPage<ArticleProps> = (props) => {
 
   return (
     <>
+      <Head>
+        <meta property="og:type" content={"article"} />
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta property="og:title" content={"CoinMena Blog"} />
+        <meta
+          property="og:image"
+          content={"https:" + thumbnail?.fields.file.url}
+        />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={"https://www.coinmena.com"} />
+        {tags?.map((tag) => (
+          <meta key={tag} property="og:article:tag" content={tag} />
+        ))}
+        <meta property="og:locale" content={router.locale} />
+        {router.locales?.map((locale) => (
+          <meta key={locale} property="og:locale:alternate" content={locale} />
+        ))}
+        <meta property="og:site_name" content="CoinMENA" />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
+        <meta
+          property="twitter:image"
+          content={"https:" + thumbnail?.fields.file.url}
+        />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:site" content="CoinMENA" />
+        <meta property="twitter:url" content="https://www.coinmena.com" />
+      </Head>
       <header>
         <Navbar />
         <ArticleBanner
